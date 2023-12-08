@@ -8,6 +8,8 @@
 import UIKit
 
 class HomeWeatherViewController: UIViewController {
+    
+    var viewModel : WeatherViewModel = WeatherViewModel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
