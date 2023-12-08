@@ -9,5 +9,7 @@ import UIKit
 
 class TopAndBottomLabelsView: UIView {
 
-
+    @IBOutlet weak var valueLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
+    
 }

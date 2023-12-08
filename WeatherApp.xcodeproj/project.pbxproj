@@ -113,11 +113,11 @@
 		94923BE52B230EBF00392077 /* WeatherApp */ = {
 			isa = PBXGroup;
 			children = (
-				94923C282B231BD500392077 /* Views */,
 				94923BE62B230EBF00392077 /* AppDelegate.swift */,
 				94923C192B230F2900392077 /* Storyboards */,
 				94923C1A2B230F5A00392077 /* ViewControllers */,
 				94923C1D2B230FD200392077 /* TableViewCells */,
+				94923C282B231BD500392077 /* Views */,
 				94923BE82B230EBF00392077 /* SceneDelegate.swift */,
 				94923BF22B230EC100392077 /* Assets.xcassets */,
 				94923BF42B230EC100392077 /* LaunchScreen.storyboard */,
