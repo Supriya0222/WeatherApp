@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  HomeWeatherViewController.swift
 //  WeatherApp
 //
 //  Created by Supriya Rajkoomar on 08/12/2023.
@@ -7,13 +7,11 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class HomeWeatherViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+
     }
 
-
 }
-
