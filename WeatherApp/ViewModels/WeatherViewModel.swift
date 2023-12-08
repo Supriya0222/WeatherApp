@@ -11,4 +11,6 @@ class WeatherViewModel {
     
     let locationService = LocationManager()
     
+    let apiService = ApiService()
+    
 }

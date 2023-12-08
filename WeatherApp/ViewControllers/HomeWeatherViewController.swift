@@ -13,6 +13,15 @@ class HomeWeatherViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        viewModel.apiService.requestForecastWeatherFor(latitude: -26.2041028, longitude: 28.0473051) { forecastList in
+            print(forecastList.list)
+            print(forecastList.list?.count)
+
+        } failureHandler: { errorMessage in
+            print(errorMessage)
+        }
+
 
     }
 
