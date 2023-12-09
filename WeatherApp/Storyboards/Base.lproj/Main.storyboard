@@ -39,6 +39,10 @@
                             <constraint firstItem="YsP-kl-Gf0" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="zvX-0j-V5q"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="backgroundImageView" destination="YsP-kl-Gf0" id="P38-2e-ZEr"/>
+                        <outlet property="weatherForecastTableView" destination="eIX-86-HPb" id="w1O-8S-RsQ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

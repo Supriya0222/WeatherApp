@@ -8,9 +8,15 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TopAndBottomLabelsView" customModule="WeatherApp" customModuleProvider="target">
+            <connections>
+                <outlet property="contentView" destination="iN0-l3-epB" id="tcq-k4-J48"/>
+                <outlet property="descriptionLabel" destination="wvS-2y-lMM" id="ItX-1m-F3S"/>
+                <outlet property="valueLabel" destination="obd-7C-kvk" id="Vlv-ka-Rf2"/>
+            </connections>
+        </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="TopAndBottomLabelsView" customModule="WeatherApp" customModuleProvider="target">
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
             <rect key="frame" x="0.0" y="0.0" width="160" height="113"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -41,10 +47,6 @@
                 <constraint firstAttribute="trailing" secondItem="A7L-WN-ewE" secondAttribute="trailing" id="ooE-qu-s7C"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <connections>
-                <outlet property="descriptionLabel" destination="wvS-2y-lMM" id="HyD-aV-BeE"/>
-                <outlet property="valueLabel" destination="obd-7C-kvk" id="0dQ-9h-Wis"/>
-            </connections>
             <point key="canvasLocation" x="-125.19083969465649" y="-240.49295774647888"/>
         </view>
     </objects>

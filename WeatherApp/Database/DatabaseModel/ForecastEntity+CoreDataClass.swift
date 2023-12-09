@@ -2,7 +2,7 @@
 //  ForecastEntity+CoreDataClass.swift
 //  WeatherApp
 //
-//  Created by Supriya Rajkoomar on 08/12/2023.
+//  Created by Supriya Rajkoomar on 09/12/2023.
 //
 //
 
