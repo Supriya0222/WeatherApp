@@ -49,7 +49,7 @@ class ApiService {
                 } else {
                     let httpResponse = response as? HTTPURLResponse
                     if httpResponse?.statusCode == 200 {
-                        completed(data, "")
+                        completed(data, nil)
                     } else {
                         //Generic error message
                         completed(nil, "An error has occurred. Please try again later.")

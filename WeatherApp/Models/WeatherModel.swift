@@ -36,7 +36,6 @@ struct WeatherModel: Codable {
         
         enum CodingKeys: String, CodingKey {
             case main = "main"
-            
         }
         
         init(from decoder: Decoder) throws {
@@ -59,7 +58,6 @@ struct WeatherModel: Codable {
             case temp
             case tempMin = "temp_min"
             case tempMax = "temp_max"
-            
         }
         
         init(from decoder: Decoder) throws {

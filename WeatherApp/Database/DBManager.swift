@@ -9,8 +9,8 @@ import Foundation
 import CoreData
 
 class DBManager: NSObject {
-    public var databaseName: String = "WeatherModel"
-    public static let shared : DBManager = DBManager(WithDatabaseName: "WeatherModel")
+    public var databaseName: String = "WeatherApp"
+    public static let shared : DBManager = DBManager(WithDatabaseName: "WeatherApp")
     
     init(WithDatabaseName name: String){
         super.init()

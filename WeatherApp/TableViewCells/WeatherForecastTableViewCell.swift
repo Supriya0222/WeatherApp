@@ -12,12 +12,12 @@ class WeatherForecastTableViewCell: UITableViewCell {
     @IBOutlet weak var weatherIconImageView: UIImageView!
     @IBOutlet weak var temperatureLabel: UILabel!
     @IBOutlet weak var weekDayLabel: UILabel!
-    var weatherDetails: WeatherModel? =  nil {
+    var weatherDetails: ForecastEntity? =  nil {
         didSet {
             if let weatherDetails = weatherDetails {
-                weekDayLabel.text = "Tuesday"
-                weatherIconImageView.image = UIImage.init(named: "clear")
-                temperatureLabel.text = String(describing: weatherDetails.main?.temp)
+                weekDayLabel.text = DateUtility.getDayOfWeek(timestamp: Double(weatherDetails.timestamp))
+                weatherIconImageView.image = WeatherViewModel.getWeatherTypeDetailsFor(weatherDetails.weather_type ?? "").iconImage
+                temperatureLabel.text = String(format: "%.1f°", weatherDetails.temp_current)
             }
         }
     }
@@ -33,6 +33,7 @@ class WeatherForecastTableViewCell: UITableViewCell {
     }
     
     private func setUpUI() {
+        backgroundColor = .clear
         weekDayLabel.font = StyleGuide.forecastFont
         weekDayLabel.textColor = StyleGuide.labelTextColor
         

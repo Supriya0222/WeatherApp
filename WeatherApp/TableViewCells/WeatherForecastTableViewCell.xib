@@ -17,8 +17,8 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dEG-Da-ldP">
-                        <rect key="frame" x="0.0" y="16" width="137" height="12"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <rect key="frame" x="24" y="16" width="113" height="12"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -29,20 +29,20 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xoi-NR-DmX">
-                        <rect key="frame" x="183" y="0.0" width="137" height="44"/>
+                        <rect key="frame" x="183" y="0.0" width="113" height="44"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
-                <color key="backgroundColor" red="1" green="0.62312068210000005" blue="0.439348395" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
                     <constraint firstItem="uL8-IE-4PT" firstAttribute="leading" secondItem="dEG-Da-ldP" secondAttribute="trailing" constant="8" id="572-VC-irp"/>
-                    <constraint firstItem="dEG-Da-ldP" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="AdL-oE-CX9"/>
+                    <constraint firstItem="dEG-Da-ldP" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="24" id="AdL-oE-CX9"/>
                     <constraint firstItem="uL8-IE-4PT" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="BDR-g1-IrR"/>
                     <constraint firstAttribute="bottom" secondItem="dEG-Da-ldP" secondAttribute="bottom" constant="16" id="QqY-Dr-TQu"/>
                     <constraint firstItem="dEG-Da-ldP" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="16" id="TBL-Un-fj6"/>
-                    <constraint firstAttribute="trailing" secondItem="Xoi-NR-DmX" secondAttribute="trailing" id="WI8-tq-hM1"/>
+                    <constraint firstAttribute="trailing" secondItem="Xoi-NR-DmX" secondAttribute="trailing" constant="24" id="WI8-tq-hM1"/>
                     <constraint firstItem="Xoi-NR-DmX" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="XtZ-kk-9To"/>
                     <constraint firstAttribute="bottom" secondItem="Xoi-NR-DmX" secondAttribute="bottom" id="gtY-AN-qLV"/>
                     <constraint firstItem="uL8-IE-4PT" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="jnD-yl-Ehz"/>

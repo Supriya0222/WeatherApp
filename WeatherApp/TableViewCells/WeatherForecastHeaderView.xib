@@ -11,34 +11,44 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="WeatherForecastHeaderView" customModule="WeatherApp" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="393" height="100"/>
+            <rect key="frame" x="0.0" y="0.0" width="393" height="80"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="c0o-6N-z0c">
-                    <rect key="frame" x="0.0" y="0.0" width="393" height="100"/>
+                    <rect key="frame" x="0.0" y="0.0" width="393" height="55"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="axQ-0h-Mzw" customClass="TopAndBottomLabelsView" customModule="WeatherApp" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="0.0" width="131" height="100"/>
-                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <rect key="frame" x="0.0" y="0.0" width="131" height="55"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qu9-hL-46X" customClass="TopAndBottomLabelsView" customModule="WeatherApp" customModuleProvider="target">
-                            <rect key="frame" x="131" y="0.0" width="131" height="100"/>
-                            <color key="backgroundColor" systemColor="systemGreenColor"/>
+                            <rect key="frame" x="131" y="0.0" width="131" height="55"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mq4-mG-ZEG" customClass="TopAndBottomLabelsView" customModule="WeatherApp" customModuleProvider="target">
-                            <rect key="frame" x="262" y="0.0" width="131" height="100"/>
-                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <rect key="frame" x="262" y="0.0" width="131" height="55"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                     </subviews>
                 </stackView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="F1n-Yu-efP" userLabel="Separator">
+                    <rect key="frame" x="0.0" y="63" width="393" height="1"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="jBW-PF-Ndl"/>
+                    </constraints>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
-            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="c0o-6N-z0c" secondAttribute="bottom" id="3jK-EG-DGm"/>
+                <constraint firstItem="F1n-Yu-efP" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="5fY-hl-fqK"/>
                 <constraint firstItem="c0o-6N-z0c" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="DZc-tY-KLh"/>
                 <constraint firstItem="c0o-6N-z0c" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="jww-DE-HYN"/>
+                <constraint firstItem="F1n-Yu-efP" firstAttribute="top" secondItem="c0o-6N-z0c" secondAttribute="bottom" constant="8" id="k3E-TP-iqi"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="c0o-6N-z0c" secondAttribute="trailing" id="kDA-7o-Kwm"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="F1n-Yu-efP" secondAttribute="bottom" constant="16" id="lFv-LD-JMY"/>
+                <constraint firstItem="F1n-Yu-efP" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="rsZ-h8-TQm"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
@@ -46,15 +56,12 @@
                 <outlet property="maximumTemperatureView" destination="mq4-mG-ZEG" id="4Q9-cL-3Bp"/>
                 <outlet property="minimumTemperatureView" destination="axQ-0h-Mzw" id="4at-nk-n8p"/>
             </connections>
-            <point key="canvasLocation" x="120" y="-85"/>
+            <point key="canvasLocation" x="119.84732824427481" y="-43.309859154929576"/>
         </view>
     </objects>
     <resources>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemGreenColor">
-            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
