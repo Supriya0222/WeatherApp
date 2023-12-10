@@ -39,6 +39,7 @@ class WeatherViewModel {
                 guard let currentTemp = weatherItem.main?.temp, let minTemp = weatherItem.main?.tempMin, let maxTemp = weatherItem.main?.tempMax, let timeStamp = weatherItem.dt, let weatherType = weatherItem.weather?.first?.main else { return }
                 
                 if previousTimestamp == nil {
+                    self.saveForecastWeather(latitude: latitude, longitude: longitude, weatherType: weatherType, currentTemperature: currentTemp, minTemperature: minTemp, maxTemperature: maxTemp, timestamp: timeStamp)
                     previousTimestamp = timeStamp
                 }
 
@@ -48,10 +49,9 @@ class WeatherViewModel {
                     self.saveForecastWeather(latitude: latitude, longitude: longitude, weatherType: weatherType, currentTemperature: currentTemp, minTemperature: minTemp, maxTemperature: maxTemp, timestamp: timeStamp)
                     previousTimestamp = timeStamp
                 }
+                
             }
-            
             successHandler(self.forecastList)
-            
         } failureHandler: { errorMessage in
             failureHandler(errorMessage)
         }

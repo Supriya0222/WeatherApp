@@ -98,8 +98,8 @@ class DBManager: NSObject {
     func fetchWeatherForecastFor(latitude: Double?, longitude: Double?) -> [ForecastEntity] {
         
         let savedLocation = WeatherViewModel.retrieveLocationFromUserDefaults()
-        let targetLatitude = latitude ?? savedLocation.latitude ?? 0.0
-        let targetLongitude = longitude ?? savedLocation.longitude ?? 0.0
+        let targetLatitude = latitude ?? savedLocation.latitude
+        let targetLongitude = longitude ?? savedLocation.longitude
 
         do {
             let fetchRequest = ForecastEntity.fetchRequest()

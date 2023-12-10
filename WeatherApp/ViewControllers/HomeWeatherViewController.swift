@@ -32,7 +32,6 @@ class HomeWeatherViewController: UIViewController {
         setupHandlers()
         
         viewModel.checkLocationPermission()
-
     }
     
     private func setupHandlers() {
