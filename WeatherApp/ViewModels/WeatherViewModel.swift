@@ -19,13 +19,13 @@ class WeatherViewModel {
         return LocationManager.shared.isLocationPermissionGranted()
     }
     
-    var locationUpdateHandler: ((CLLocation) -> Void)?
+    var locationUpdateHandler: ((CLLocation, String?) -> Void)?
     
     var locationAccessDeniedHandler: (() -> Void)?
     
     var offlineHandler: (() -> Void)?
     
-    func getForecastListFor(latitude: Double, longitude: Double, successHandler: @escaping([ForecastEntity]) -> Void, failureHandler: @escaping(String?) -> Void) {
+    func getForecastListFor(region: String?, latitude: Double, longitude: Double, successHandler: @escaping([ForecastEntity]) -> Void, failureHandler: @escaping(String?) -> Void) {
         
         apiService.requestForecastWeatherFor(latitude: latitude, longitude: longitude) { forecastList in
             
@@ -34,19 +34,20 @@ class WeatherViewModel {
                 return
             }
             self.forecastList.removeAll()
+            DBManager.shared.deleteWeatherForecast(region)
             var previousTimestamp: Int32? = nil
             for weatherItem in list {
                 guard let currentTemp = weatherItem.main?.temp, let minTemp = weatherItem.main?.tempMin, let maxTemp = weatherItem.main?.tempMax, let timeStamp = weatherItem.dt, let weatherType = weatherItem.weather?.first?.main else { return }
                 
                 if previousTimestamp == nil {
-                    self.saveForecastWeather(latitude: latitude, longitude: longitude, weatherType: weatherType, currentTemperature: currentTemp, minTemperature: minTemp, maxTemperature: maxTemp, timestamp: timeStamp)
+                    self.saveForecastWeather(region: region ?? "", weatherType: weatherType, currentTemperature: currentTemp, minTemperature: minTemp, maxTemperature: maxTemp, timestamp: timeStamp)
                     previousTimestamp = timeStamp
                 }
 
                 let dateResult = DateUtility.compareDayValues(timestamp1: Double(previousTimestamp!), timestamp2: Double(timeStamp))
                 
                 if dateResult != .orderedSame {
-                    self.saveForecastWeather(latitude: latitude, longitude: longitude, weatherType: weatherType, currentTemperature: currentTemp, minTemperature: minTemp, maxTemperature: maxTemp, timestamp: timeStamp)
+                    self.saveForecastWeather(region: region ?? "", weatherType: weatherType, currentTemperature: currentTemp, minTemperature: minTemp, maxTemperature: maxTemp, timestamp: timeStamp)
                     previousTimestamp = timeStamp
                 }
                 
@@ -57,11 +58,11 @@ class WeatherViewModel {
         }
     }
     
-    func getCurrentWeatherFor(latitude: Double, longitude: Double, successHandler: @escaping(ForecastEntity) -> Void, failureHandler: @escaping(String?) -> Void){
+    func getCurrentWeatherFor(region: String?, latitude: Double, longitude: Double, successHandler: @escaping(ForecastEntity) -> Void, failureHandler: @escaping(String?) -> Void){
         apiService.requestCurrentWeatherFor(latitude: latitude, longitude: longitude) { currentWeather in
             guard let currentTemp = currentWeather.main?.temp, let minTemp = currentWeather.main?.tempMin, let maxTemp = currentWeather.main?.tempMax, let timeStamp = currentWeather.dt, let weatherType = currentWeather.weather?.first?.main else { return }
-            
-            self.currentWeather = DBManager.shared.saveCurrentWeatherFor(latitude: latitude, longitude: longitude, weatherType: weatherType, currentTemperature: currentTemp, minTemperature: minTemp, maxTemperature: maxTemp, timestamp: timeStamp)
+                        
+            self.currentWeather = DBManager.shared.saveCurrentWeatherFor(region: region ?? "", weatherType: weatherType, currentTemperature: currentTemp, minTemperature: minTemp, maxTemperature: maxTemp, timestamp: timeStamp)
             
             successHandler(self.currentWeather!)
             
@@ -70,29 +71,34 @@ class WeatherViewModel {
         }
     }
     
-    func getCachedCurrentWeather(latitude: Double?, longitude: Double?) -> ForecastEntity? {
-        currentWeather = DBManager.shared.fetchCurrentWeatherFor(latitude: latitude, longitude: longitude)
+    func getCachedCurrentWeather(region: String?) -> ForecastEntity? {
+        currentWeather = DBManager.shared.fetchCurrentWeatherFor(region: region)
         return currentWeather
     }
     
-    func getCachedForecastWeather(latitude: Double?, longitude: Double?) -> [ForecastEntity] {
-        forecastList = DBManager.shared.fetchWeatherForecastFor(latitude: latitude, longitude: longitude)
+    func getCachedForecastWeather(region: String?) -> [ForecastEntity] {
+        forecastList = DBManager.shared.fetchWeatherForecastFor(region: region)
         return forecastList
     }
     
-    private func saveForecastWeather(latitude: Double, longitude: Double, weatherType: String, currentTemperature: Double, minTemperature: Double, maxTemperature: Double, timestamp: Int32) {
+    private func saveForecastWeather(region: String, weatherType: String, currentTemperature: Double, minTemperature: Double, maxTemperature: Double, timestamp: Int32) {
         
-        let cachedForecastWeather = DBManager.shared.saveForecastWeatherFor(latitude: latitude, longitude: longitude, weatherType: weatherType, currentTemperature: currentTemperature, minTemperature: minTemperature, maxTemperature: maxTemperature, timestamp: timestamp)
+        let cachedForecastWeather = DBManager.shared.saveForecastWeatherFor(region: region, weatherType: weatherType, currentTemperature: currentTemperature, minTemperature: minTemperature, maxTemperature: maxTemperature, timestamp: timestamp)
         self.forecastList.append(cachedForecastWeather)
     }
     
     func checkLocationPermission() {
         if LocationManager.shared.isLocationPermissionGranted() {
             LocationManager.shared.startUpdatingLocation()
+            
             LocationManager.shared.locationDidUpdate = { [weak self] location in
-                self?.locationUpdateHandler?(location)
+                
+                self?.getRegion(location, completion: { regionName in
+                    self?.locationUpdateHandler?(location, regionName)
+                    })
+                
                 }
-
+            
         } else {
             switch LocationManager.shared.locationAuthorizationStatus {
             case .notDetermined:
@@ -113,12 +119,9 @@ class WeatherViewModel {
         LocationManager.shared.requestLocationPermission()
     }
         
-    func saveLocationToUserDefaults(_ location: CLLocation) {
-        let latitude = location.coordinate.latitude
-        let longitude = location.coordinate.longitude
+    func saveLocationToUserDefaults(_ region: String) {
         
-        UserDefaults.standard.set(latitude, forKey: "SavedLatitude")
-        UserDefaults.standard.set(longitude, forKey: "SavedLongitude")
+        UserDefaults.standard.set(region, forKey: "REGION_KEY")
         UserDefaults.standard.synchronize()
     }
     
@@ -159,12 +162,8 @@ class WeatherViewModel {
         }
     }
         
-    static func retrieveLocationFromUserDefaults() -> (latitude: Double, longitude: Double) {
-        if let savedLatitude = UserDefaults.standard.value(forKey: "SavedLatitude") as? Double,
-           let savedLongitude = UserDefaults.standard.value(forKey: "SavedLongitude") as? Double {
-            return (latitude: savedLatitude, longitude: savedLongitude)
-        }
-        return (latitude: 0.0, longitude: 0.0)
+    static func retrieveLocationFromUserDefaults() -> String?{
+        return UserDefaults.standard.value(forKey: "REGION_KEY") as? String
     }
 
 }

@@ -38,16 +38,14 @@ class DBManager: NSObject {
         return self.persistentContainer.newBackgroundContext()
     }()
     
-    func saveCurrentWeatherFor(latitude: Double?, longitude: Double?, weatherType: String, currentTemperature: Double, minTemperature: Double, maxTemperature: Double, timestamp: Int32) -> ForecastEntity {
+    func saveCurrentWeatherFor(region: String?, weatherType: String, currentTemperature: Double, minTemperature: Double, maxTemperature: Double, timestamp: Int32) -> ForecastEntity {
         
-        let savedLocation = WeatherViewModel.retrieveLocationFromUserDefaults()
-        let latitude = latitude ?? savedLocation.latitude
-        let longitude = longitude ?? savedLocation.longitude
+        let region = region ?? WeatherViewModel.retrieveLocationFromUserDefaults()
         
         // Updating existing current for targeted location or creating a new one
-        let newItem = fetchCurrentWeatherFor(latitude: latitude, longitude: longitude) ?? ForecastEntity(context: mainContext)
-        newItem.latitude = latitude
-        newItem.longitude = longitude
+        let newItem = fetchCurrentWeatherFor(region: region) ?? ForecastEntity(context: mainContext)
+
+        newItem.region = region
         newItem.weather_type = weatherType
         newItem.temp_current = currentTemperature
         newItem.temp_min = minTemperature
@@ -58,16 +56,14 @@ class DBManager: NSObject {
         return newItem
     }
     
-    func fetchCurrentWeatherFor(latitude: Double?, longitude: Double?) -> ForecastEntity? {
+    func fetchCurrentWeatherFor(region: String?) -> ForecastEntity? {
         
-        let savedLocation = WeatherViewModel.retrieveLocationFromUserDefaults()
-        let targetLatitude = latitude ?? savedLocation.latitude
-        let targetLongitude = longitude ?? savedLocation.longitude
+        let region = region ?? WeatherViewModel.retrieveLocationFromUserDefaults()
 
         do {
             let fetchRequest = ForecastEntity.fetchRequest()
             fetchRequest.predicate = NSPredicate(
-                format: "latitude == %f AND longitude == %f AND is_current == YES", targetLatitude, targetLongitude)
+                format: "region == %a AND is_current == YES", region ?? "")
 
             return try mainContext.fetch(fetchRequest).first
         } catch {
@@ -76,15 +72,12 @@ class DBManager: NSObject {
 
     }
     
-    func saveForecastWeatherFor(latitude: Double?, longitude: Double?, weatherType: String, currentTemperature: Double, minTemperature: Double, maxTemperature: Double, timestamp: Int32) -> ForecastEntity {
+    func saveForecastWeatherFor(region: String?, weatherType: String, currentTemperature: Double, minTemperature: Double, maxTemperature: Double, timestamp: Int32) -> ForecastEntity {
         
-        let savedLocation = WeatherViewModel.retrieveLocationFromUserDefaults() 
-        let latitude = latitude ?? savedLocation.latitude
-        let longitude = longitude ?? savedLocation.longitude
+        let region = region ?? WeatherViewModel.retrieveLocationFromUserDefaults()
             
         let newItem = ForecastEntity(context: mainContext)
-        newItem.latitude = latitude
-        newItem.longitude = longitude
+        newItem.region = region
         newItem.weather_type = weatherType
         newItem.temp_current = currentTemperature
         newItem.temp_min = minTemperature
@@ -95,16 +88,14 @@ class DBManager: NSObject {
         return newItem
     }
     
-    func fetchWeatherForecastFor(latitude: Double?, longitude: Double?) -> [ForecastEntity] {
+    func fetchWeatherForecastFor(region: String?) -> [ForecastEntity] {
         
-        let savedLocation = WeatherViewModel.retrieveLocationFromUserDefaults()
-        let targetLatitude = latitude ?? savedLocation.latitude
-        let targetLongitude = longitude ?? savedLocation.longitude
+        let region = region ?? WeatherViewModel.retrieveLocationFromUserDefaults()
 
         do {
             let fetchRequest = ForecastEntity.fetchRequest()
             fetchRequest.predicate = NSPredicate(
-                format: "latitude == %f AND longitude == %f AND is_current == NO", targetLatitude, targetLongitude)
+                format: "region == %a AND is_current == NO", region ?? "")
 
             return try mainContext.fetch(fetchRequest)
         } catch {
@@ -112,8 +103,8 @@ class DBManager: NSObject {
         }
     }
     
-    func deleteWeatherForecast(_ latitude: Double?, longitude: Double?) {
-        let entities = fetchWeatherForecastFor(latitude: latitude, longitude: longitude)
+    func deleteWeatherForecast(_ region: String?) {
+        let entities = fetchWeatherForecastFor(region: region)
         for entity in entities {
             mainContext.delete(entity)
         }

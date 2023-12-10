@@ -35,9 +35,10 @@ class HomeWeatherViewController: UIViewController {
     }
     
     private func setupHandlers() {
-        viewModel.locationUpdateHandler = { [weak self] location in
-            self?.viewModel.saveLocationToUserDefaults(location)
-            self?.handleLocationUpdate(location)
+        viewModel.locationUpdateHandler = { [weak self] (location,regionName) in
+            
+            self?.viewModel.saveLocationToUserDefaults(regionName ?? "UnknownRegion")
+            self?.handleLocationUpdate(location, regionName: regionName)
             
             }
         //Unable to test when location is allowed as app is not featuring in settings
@@ -77,18 +78,18 @@ class HomeWeatherViewController: UIViewController {
         }
     }
     
-    func handleLocationUpdate(_ location: CLLocation) {
+    func handleLocationUpdate(_ location: CLLocation, regionName: String?) {
         let latitude = location.coordinate.latitude
         let longitude = location.coordinate.longitude
         
         //Add activity indicator to view while loading content
         loader = addLoader(ToMainView: view)
         
-        viewModel.getCurrentWeatherFor(latitude: latitude, longitude: longitude) { currentWeather in
+        viewModel.getCurrentWeatherFor(region: regionName, latitude: latitude, longitude: longitude) { currentWeather in
             
             self.removeLoader()
-            self.updateUIWith(location, currentWeather: currentWeather)
-            self.viewModel.getForecastListFor(latitude: latitude, longitude: longitude) { list in
+            self.updateUIWith(currentWeather: currentWeather)
+            self.viewModel.getForecastListFor(region: regionName, latitude: latitude, longitude: longitude) { list in
                 self.weatherForecastTableView.reloadData()
                 
             } failureHandler: { message in
@@ -122,15 +123,12 @@ class HomeWeatherViewController: UIViewController {
         }
     }
     
-    private func updateUIWith(_ location: CLLocation?, currentWeather: ForecastEntity) {
-        let savedLocation = CLLocation.init(latitude: WeatherViewModel.retrieveLocationFromUserDefaults().latitude, longitude: WeatherViewModel.retrieveLocationFromUserDefaults().longitude)
+    private func updateUIWith(currentWeather: ForecastEntity) {
+        let region = currentWeather.region
         
         //Set region and date labels
-        let location = location ?? savedLocation
-        self.viewModel.getRegion(location) { region in
-            if let region = region {
-                self.updateLabel(self.regionLabel, value: "Region: \(region)")
-            }
+        if let _ = region {
+            self.updateLabel(self.regionLabel, value: "Region: \(String(describing: region!))")
         }
         
         if let dateUpdated = self.viewModel.getDateUpdated(currentWeather.timestamp) {
@@ -146,13 +144,13 @@ class HomeWeatherViewController: UIViewController {
     }
     
     private func displayWeatherFromDatabase() {
-        let cachedForecast = self.viewModel.getCachedForecastWeather(latitude: nil, longitude: nil)
+        let cachedForecast = self.viewModel.getCachedForecastWeather(region: nil)
         
-        let cachedWeather = self.viewModel.getCachedCurrentWeather(latitude: nil, longitude: nil)
+        let cachedWeather = self.viewModel.getCachedCurrentWeather(region: nil)
         
         if !cachedForecast.isEmpty && cachedWeather != nil {
             
-            self.updateUIWith(nil, currentWeather: cachedWeather!)
+            self.updateUIWith(currentWeather: cachedWeather!)
 
             self.weatherForecastTableView.reloadData()
         }
