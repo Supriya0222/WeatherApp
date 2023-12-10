@@ -1,9 +1,9 @@
 # WeatherApp
 
-##OverView
+## Overiew
 This project is a mobile assessment as part of the interview process. The application consists of retrieving a user's current location and displaying the current weather as well as a forecast of 5 days using https://openweathermap.org/current and https://openweathermap.org/forecast5 respectively. 
 
-##About
+## About
 The project uses:
 - MVVM approch with the view model named 'WeatherViewModel'
 - UIKit 
@@ -12,7 +12,7 @@ The project uses:
 - CoreLocation for retrieving current location
 - API KEY obtained from Open Weather Map API
 
-##Improvements
+## Improvements
 - More unit tests can be implemented
 - A 'refresh' button in the app can be useful
 
