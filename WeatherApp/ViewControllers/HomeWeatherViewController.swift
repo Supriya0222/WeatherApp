@@ -41,7 +41,7 @@ class HomeWeatherViewController: UIViewController {
             self?.handleLocationUpdate(location, regionName: regionName)
             
             }
-        //Unable to test when location is allowed as app is not featuring in settings
+
         viewModel.locationAccessDeniedHandler = {
             AlertViewUtility.showLocationAccessDeniedAlert(self)
         }
@@ -89,6 +89,7 @@ class HomeWeatherViewController: UIViewController {
             
             self.removeLoader()
             self.updateUIWith(currentWeather: currentWeather)
+            print("timestamp: \(currentWeather.timestamp)")
             self.viewModel.getForecastListFor(region: regionName, latitude: latitude, longitude: longitude) { list in
                 self.weatherForecastTableView.reloadData()
                 

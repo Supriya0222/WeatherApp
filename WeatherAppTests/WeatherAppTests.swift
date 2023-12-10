@@ -7,8 +7,10 @@
 
 import XCTest
 @testable import WeatherApp
+import CoreLocation
 
 final class WeatherAppTests: XCTestCase {
+    var viewModel: WeatherViewModel?
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -32,5 +34,23 @@ final class WeatherAppTests: XCTestCase {
             // Put the code you want to measure the time of here.
         }
     }
+    
+    func testGetRegionName() {
+
+        let location = CLLocation(latitude: 51.50998, longitude: -0.1337)
+        viewModel?.getRegion(location, completion: { result in
+            XCTAssertEqual(result, "London")
+
+        })
+    }
+    
+    func testForDate() {
+        let timestamp: Double = 1702241530
+        let result = DateUtility.formatDateFromTimestamp(timestamp: timestamp)
+        
+        XCTAssertEqual(result, "2023/12/11\u{00a0}00.52")
+
+    }
+
 
 }

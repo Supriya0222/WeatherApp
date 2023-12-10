@@ -9,6 +9,9 @@ import Foundation
 import CoreData
 
 class DBManager: NSObject {
+    
+    static let userDefaultsRegionKey = "REGION_KEY"
+    
     public var databaseName: String = "WeatherApp"
     public static let shared : DBManager = DBManager(WithDatabaseName: "WeatherApp")
     

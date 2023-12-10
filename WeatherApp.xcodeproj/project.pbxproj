@@ -34,6 +34,8 @@
 		94FDC57A2B262DD3004A0266 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94FDC5792B262DD3004A0266 /* Utility.swift */; };
 		94FDC57D2B264B72004A0266 /* ForecastEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94FDC57B2B264B72004A0266 /* ForecastEntity+CoreDataClass.swift */; };
 		94FDC57E2B264B72004A0266 /* ForecastEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94FDC57C2B264B72004A0266 /* ForecastEntity+CoreDataProperties.swift */; };
+		94FDC58B2B265E22004A0266 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94923BE62B230EBF00392077 /* AppDelegate.swift */; };
+		94FDC58C2B265E22004A0266 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94923BE62B230EBF00392077 /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -420,6 +422,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94FDC58B2B265E22004A0266 /* AppDelegate.swift in Sources */,
 				94923C012B230EC100392077 /* WeatherAppTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -429,6 +432,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				94923C0B2B230EC100392077 /* WeatherAppUITests.swift in Sources */,
+				94FDC58C2B265E22004A0266 /* AppDelegate.swift in Sources */,
 				94923C0D2B230EC100392077 /* WeatherAppUITestsLaunchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -121,7 +121,7 @@ class WeatherViewModel {
         
     func saveLocationToUserDefaults(_ region: String) {
         
-        UserDefaults.standard.set(region, forKey: "REGION_KEY")
+        UserDefaults.standard.set(region, forKey: DBManager.userDefaultsRegionKey)
         UserDefaults.standard.synchronize()
     }
     
@@ -163,7 +163,7 @@ class WeatherViewModel {
     }
         
     static func retrieveLocationFromUserDefaults() -> String?{
-        return UserDefaults.standard.value(forKey: "REGION_KEY") as? String
+        return UserDefaults.standard.value(forKey: DBManager.userDefaultsRegionKey) as? String
     }
 
 }
