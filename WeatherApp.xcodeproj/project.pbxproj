@@ -33,6 +33,7 @@
 		94FDC5752B249D0A004A0266 /* ForecastEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94FDC5732B249D0A004A0266 /* ForecastEntity+CoreDataClass.swift */; };
 		94FDC5762B249D0A004A0266 /* ForecastEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94FDC5742B249D0A004A0266 /* ForecastEntity+CoreDataProperties.swift */; };
 		94FDC5782B24DE27004A0266 /* DateUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94FDC5772B24DE27004A0266 /* DateUtility.swift */; };
+		94FDC57A2B262DD3004A0266 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94FDC5792B262DD3004A0266 /* Utility.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +84,7 @@
 		94FDC5732B249D0A004A0266 /* ForecastEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ForecastEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
 		94FDC5742B249D0A004A0266 /* ForecastEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ForecastEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		94FDC5772B24DE27004A0266 /* DateUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateUtility.swift; sourceTree = "<group>"; };
+		94FDC5792B262DD3004A0266 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -254,6 +256,7 @@
 			children = (
 				94FDC56B2B245BE7004A0266 /* StyleGuide.swift */,
 				94FDC5772B24DE27004A0266 /* DateUtility.swift */,
+				94FDC5792B262DD3004A0266 /* Utility.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -394,6 +397,7 @@
 			files = (
 				94FDC5672B244356004A0266 /* WeatherForecastHeaderView.swift in Sources */,
 				94923BF12B230EBF00392077 /* WeatherApp.xcdatamodeld in Sources */,
+				94FDC57A2B262DD3004A0266 /* Utility.swift in Sources */,
 				94FDC5632B237F79004A0266 /* WeatherViewModel.swift in Sources */,
 				94923BE72B230EBF00392077 /* AppDelegate.swift in Sources */,
 				94A1668B2B23622B0006B8D3 /* WeatherModel.swift in Sources */,

@@ -121,26 +121,6 @@ class WeatherViewModel {
         UserDefaults.standard.set(longitude, forKey: "SavedLongitude")
         UserDefaults.standard.synchronize()
     }
-        
-    func showLocationAccessDeniedAlert(_ viewController: UIViewController) {
-        let alert = UIAlertController(
-            title: "Location Access Denied",
-            message: "Please enable location access in Settings to use this feature.",
-            preferredStyle: .alert
-        )
-
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        alert.addAction(cancelAction)
-
-        let settingsAction = UIAlertAction(title: "Settings", style: .default) { _ in
-            if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
-                UIApplication.shared.open(settingsURL, options: [:], completionHandler: nil)
-            }
-        }
-        alert.addAction(settingsAction)
-
-        viewController.present(alert, animated: true, completion: nil)
-    }
     
     func getRegion(_ location: CLLocation, completion: @escaping (String?) -> Void) {
         LocationManager.shared.reverseGeocodeLocation(location: location) { region in

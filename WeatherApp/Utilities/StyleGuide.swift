@@ -23,5 +23,7 @@ struct StyleGuide {
     static let cloudyColor = UIColor.init(red: 84/255, green: 113/255, blue: 122/255, alpha: 1.0)
     static let rainyColor = UIColor.init(red: 87/255, green: 87/255, blue: 93/255, alpha: 1.0)
     static let labelTextColor = UIColor.white
+    
+    static let placeholderColor = UIColor.init(red: 51/255, green: 153/255, blue: 255/255, alpha: 1.0)
 
 }

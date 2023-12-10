@@ -19,6 +19,8 @@ class HomeWeatherViewController: UIViewController {
     
     var headerView: WeatherForecastHeaderView?
     var viewModel : WeatherViewModel = WeatherViewModel()
+    
+    var loader : UIActivityIndicatorView?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,15 +41,13 @@ class HomeWeatherViewController: UIViewController {
             self?.handleLocationUpdate(location)
             
             }
+        //Unable to test when location is allowed as app is not featuring in settings
+        viewModel.locationAccessDeniedHandler = {
+            AlertViewUtility.showLocationAccessDeniedAlert(self)
+        }
         
         viewModel.offlineHandler = {
-             let cachedForecast = self.viewModel.getCachedForecastWeather(latitude: nil, longitude: nil)
-            let cachedWeather = self.viewModel.getCachedCurrentWeather(latitude: nil, longitude: nil)
-
-            if !cachedForecast.isEmpty && cachedWeather != nil {
-                self.weatherForecastTableView.reloadData()
-            }
-            
+            self.displayWeatherFromDatabase()
         }
     }
     
@@ -71,9 +71,9 @@ class HomeWeatherViewController: UIViewController {
             weatherForecastTableView.backgroundColor = WeatherViewModel.getWeatherTypeDetailsFor(weatherType!).backgroundColor
             backgroundImageView.image =  WeatherViewModel.getWeatherTypeDetailsFor(weatherType!).backgroundImage
         } else {
-            self.view.backgroundColor = StyleGuide.sunnyColor
+            self.view.backgroundColor = StyleGuide.placeholderColor
             backgroundImageView.image = nil
-            weatherForecastTableView.backgroundColor = StyleGuide.sunnyColor
+            weatherForecastTableView.backgroundColor = nil
 
         }
     }
@@ -82,36 +82,82 @@ class HomeWeatherViewController: UIViewController {
         let latitude = location.coordinate.latitude
         let longitude = location.coordinate.longitude
         
+        //Add activity indicator to view while loading content
+        loader = addLoader(ToMainView: view)
+        
         viewModel.getCurrentWeatherFor(latitude: latitude, longitude: longitude) { currentWeather in
-            //Set region and date labels
-            self.viewModel.getRegion(location) { region in
-                if let region = region {
-                    self.updateLabel(self.regionLabel, value: "Region: \(region)")
-                }
-            }
             
-            if let dateUpdated = self.viewModel.getDateUpdated(currentWeather.timestamp) {
-                self.updateLabel(self.dateUpdatedLabel, value: "Last Updated: \(dateUpdated)")
-            }
-            
-            self.setBackgroundFor(currentWeather.weather_type)
-            self.setCurrentWeatherDetailsFor(currentWeather)
-            if let _ = self.headerView {
-                self.weatherForecastTableView.tableHeaderView = self.headerView
-                self.headerView?.updateHeaderViewWith(weatherDetails: currentWeather)
-            }
-            
+            self.removeLoader()
+            self.updateUIWith(location, currentWeather: currentWeather)
             self.viewModel.getForecastListFor(latitude: latitude, longitude: longitude) { list in
                 self.weatherForecastTableView.reloadData()
-            } failureHandler: { message in
                 
+            } failureHandler: { message in
+                DispatchQueue.main.async {
+                    self.removeLoader()
+                    AlertViewUtility.showAlertWithTitle(self, tintColor: nil, title: "Error", message: message ?? "An error has occurred. Please try again later.", cancelButtonTitle: "Okay") { completion in
+                        
+                        self.displayWeatherFromDatabase()
+
+                    }
+                }
             }
 
         } failureHandler: { errorMessage in
-            
+            DispatchQueue.main.async {
+                self.removeLoader()
+                AlertViewUtility.showAlertWithTitle(self, tintColor: nil, title: "Error", message: errorMessage ?? "An error has occurred. Please try again later.", cancelButtonTitle: "Okay") { completion in
+                    
+                    self.displayWeatherFromDatabase()
+
+                }
+            }
         }
         
       }
+    
+    //Method to remove activity indicator
+    private func removeLoader(){
+        if let loader = loader{
+            loader.removeFromSuperview()
+        }
+    }
+    
+    private func updateUIWith(_ location: CLLocation?, currentWeather: ForecastEntity) {
+        let savedLocation = CLLocation.init(latitude: WeatherViewModel.retrieveLocationFromUserDefaults().latitude, longitude: WeatherViewModel.retrieveLocationFromUserDefaults().longitude)
+        
+        //Set region and date labels
+        let location = location ?? savedLocation
+        self.viewModel.getRegion(location) { region in
+            if let region = region {
+                self.updateLabel(self.regionLabel, value: "Region: \(region)")
+            }
+        }
+        
+        if let dateUpdated = self.viewModel.getDateUpdated(currentWeather.timestamp) {
+            self.updateLabel(self.dateUpdatedLabel, value: "Last Updated: \(dateUpdated)")
+        }
+        
+        self.setBackgroundFor(currentWeather.weather_type)
+        self.setCurrentWeatherDetailsFor(currentWeather)
+        if let _ = self.headerView {
+            self.weatherForecastTableView.tableHeaderView = self.headerView
+            self.headerView?.updateHeaderViewWith(weatherDetails: currentWeather)
+        }
+    }
+    
+    private func displayWeatherFromDatabase() {
+        let cachedForecast = self.viewModel.getCachedForecastWeather(latitude: nil, longitude: nil)
+        
+        let cachedWeather = self.viewModel.getCachedCurrentWeather(latitude: nil, longitude: nil)
+        
+        if !cachedForecast.isEmpty && cachedWeather != nil {
+            
+            self.updateUIWith(nil, currentWeather: cachedWeather!)
+
+            self.weatherForecastTableView.reloadData()
+        }
+    }
     
     private func setCurrentWeatherDetailsFor(_ weatherDetails: ForecastEntity) {
         currentDetailsView.valueLabel.font = StyleGuide.currentTempFont
