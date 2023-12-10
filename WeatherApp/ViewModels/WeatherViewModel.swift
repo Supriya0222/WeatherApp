@@ -91,7 +91,6 @@ class WeatherViewModel {
             LocationManager.shared.startUpdatingLocation()
             LocationManager.shared.locationDidUpdate = { [weak self] location in
                 self?.locationUpdateHandler?(location)
-                
                 }
 
         } else {
@@ -143,11 +142,15 @@ class WeatherViewModel {
         viewController.present(alert, animated: true, completion: nil)
     }
     
-    func updateRegionAndDate(_ location: CLLocation) -> (region: String?, date: String?) {
+    func getRegion(_ location: CLLocation, completion: @escaping (String?) -> Void) {
         LocationManager.shared.reverseGeocodeLocation(location: location) { region in
-            print(region)
+            completion(region)
         }
-        return("","")
+    }
+    
+    func getDateUpdated(_ dateTimestamp: Int32) -> String? {
+        let date = DateUtility.formatDateFromTimestamp(timestamp: Double(dateTimestamp))
+        return date 
     }
     
     static func getWeatherTypeDetailsFor(_ type: String) -> (backgroundColor: UIColor, backgroundImage: UIImage?, iconImage: UIImage?, weatherType: String) {

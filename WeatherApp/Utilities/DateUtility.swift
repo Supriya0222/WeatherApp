@@ -37,4 +37,16 @@ class DateUtility {
         dateFormatter.locale = Locale(identifier: "en_US") 
         return dateFormatter.weekdaySymbols[weekday - 1]
     }
+    
+    static func formatDateFromTimestamp(timestamp: TimeInterval) -> String? {
+        let date = Date(timeIntervalSince1970: timestamp)
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        dateFormatter.timeZone = TimeZone.current // You can set the desired time zone
+        
+        let formattedDate = dateFormatter.string(from: date)
+        
+        return formattedDate
+    }
 }

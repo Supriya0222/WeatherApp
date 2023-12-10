@@ -36,7 +36,7 @@ class HomeWeatherViewController: UIViewController {
     private func setupHandlers() {
         viewModel.locationUpdateHandler = { [weak self] location in
             self?.viewModel.saveLocationToUserDefaults(location)
-            self?.handleLocationUpdate(location.coordinate.latitude, location.coordinate.longitude)
+            self?.handleLocationUpdate(location)
             
             }
         
@@ -78,9 +78,21 @@ class HomeWeatherViewController: UIViewController {
         }
     }
     
-    func handleLocationUpdate(_ latitude: Double, _ longitude: Double) {
+    func handleLocationUpdate(_ location: CLLocation) {
+        let latitude = location.coordinate.latitude
+        let longitude = location.coordinate.longitude
         
         viewModel.getCurrentWeatherFor(latitude: latitude, longitude: longitude) { currentWeather in
+            //Set region and date labels
+            self.viewModel.getRegion(location) { region in
+                if let region = region {
+                    self.updateLabel(self.regionLabel, value: "Region: \(region)")
+                }
+            }
+            
+            if let dateUpdated = self.viewModel.getDateUpdated(currentWeather.timestamp) {
+                self.updateLabel(self.dateUpdatedLabel, value: "Last Updated: \(dateUpdated)")
+            }
             
             self.setBackgroundFor(currentWeather.weather_type)
             self.setCurrentWeatherDetailsFor(currentWeather)
@@ -90,7 +102,6 @@ class HomeWeatherViewController: UIViewController {
             }
             
             self.viewModel.getForecastListFor(latitude: latitude, longitude: longitude) { list in
-                print(list.count)
                 self.weatherForecastTableView.reloadData()
             } failureHandler: { message in
                 
@@ -111,6 +122,12 @@ class HomeWeatherViewController: UIViewController {
         currentDetailsView.valueLabel.text = String(format: "%.1f°", weatherDetails.temp_current)
         currentDetailsView.descriptionLabel.text = WeatherViewModel.getWeatherTypeDetailsFor(weatherDetails.weather_type ?? "").weatherType.uppercased()
 
+    }
+    
+    private func updateLabel(_ label: UILabel, value: String) {
+        label.text = value
+        label.font = StyleGuide.smallLabelFont
+        label.textColor = StyleGuide.labelTextColor
     }
 
 }
