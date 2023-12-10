@@ -40,9 +40,9 @@ class DBManager: NSObject {
     
     func saveCurrentWeatherFor(latitude: Double?, longitude: Double?, weatherType: String, currentTemperature: Double, minTemperature: Double, maxTemperature: Double, timestamp: Int32) -> ForecastEntity {
         
-        //Save latitude and longitude in nsuserdefaults in case of offline
-        let latitude = latitude ?? 0.0
-        let longitude = longitude ?? 0.0
+        let savedLocation = WeatherViewModel.retrieveLocationFromUserDefaults()
+        let latitude = latitude ?? savedLocation.latitude
+        let longitude = longitude ?? savedLocation.longitude
         
         // Updating existing current for targeted location or creating a new one
         let newItem = fetchCurrentWeatherFor(latitude: latitude, longitude: longitude) ?? ForecastEntity(context: mainContext)
@@ -60,9 +60,9 @@ class DBManager: NSObject {
     
     func fetchCurrentWeatherFor(latitude: Double?, longitude: Double?) -> ForecastEntity? {
         
-        //Save latitude and longitude in nsuserdefaults in case of offline
-        let targetLatitude = latitude ?? 0.0
-        let targetLongitude = longitude ?? 0.0
+        let savedLocation = WeatherViewModel.retrieveLocationFromUserDefaults()
+        let targetLatitude = latitude ?? savedLocation.latitude
+        let targetLongitude = longitude ?? savedLocation.longitude
 
         do {
             let fetchRequest = ForecastEntity.fetchRequest()
@@ -78,10 +78,10 @@ class DBManager: NSObject {
     
     func saveForecastWeatherFor(latitude: Double?, longitude: Double?, weatherType: String, currentTemperature: Double, minTemperature: Double, maxTemperature: Double, timestamp: Int32) -> ForecastEntity {
         
-        //Save latitude and longitude in nsuserdefaults in case of offline
-        let latitude = latitude ?? 0.0
-        let longitude = longitude ?? 0.0
-        
+        let savedLocation = WeatherViewModel.retrieveLocationFromUserDefaults() 
+        let latitude = latitude ?? savedLocation.latitude
+        let longitude = longitude ?? savedLocation.longitude
+            
         let newItem = ForecastEntity(context: mainContext)
         newItem.latitude = latitude
         newItem.longitude = longitude
@@ -97,9 +97,9 @@ class DBManager: NSObject {
     
     func fetchWeatherForecastFor(latitude: Double?, longitude: Double?) -> [ForecastEntity] {
         
-        //Save latitude and longitude in nsuserdefaults in case of offline
-        let targetLatitude = latitude ?? 0.0
-        let targetLongitude = longitude ?? 0.0
+        let savedLocation = WeatherViewModel.retrieveLocationFromUserDefaults()
+        let targetLatitude = latitude ?? savedLocation.latitude ?? 0.0
+        let targetLongitude = longitude ?? savedLocation.longitude ?? 0.0
 
         do {
             let fetchRequest = ForecastEntity.fetchRequest()

@@ -15,18 +15,18 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="c0o-6N-z0c">
-                    <rect key="frame" x="0.0" y="0.0" width="393" height="55"/>
+                    <rect key="frame" x="24" y="0.0" width="345" height="55"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="axQ-0h-Mzw" customClass="TopAndBottomLabelsView" customModule="WeatherApp" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="0.0" width="131" height="55"/>
+                            <rect key="frame" x="0.0" y="0.0" width="115" height="55"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qu9-hL-46X" customClass="TopAndBottomLabelsView" customModule="WeatherApp" customModuleProvider="target">
-                            <rect key="frame" x="131" y="0.0" width="131" height="55"/>
+                            <rect key="frame" x="115" y="0.0" width="115" height="55"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mq4-mG-ZEG" customClass="TopAndBottomLabelsView" customModule="WeatherApp" customModuleProvider="target">
-                            <rect key="frame" x="262" y="0.0" width="131" height="55"/>
+                            <rect key="frame" x="230" y="0.0" width="115" height="55"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                     </subviews>
@@ -44,9 +44,9 @@
             <constraints>
                 <constraint firstItem="F1n-Yu-efP" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="5fY-hl-fqK"/>
                 <constraint firstItem="c0o-6N-z0c" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="DZc-tY-KLh"/>
-                <constraint firstItem="c0o-6N-z0c" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="jww-DE-HYN"/>
+                <constraint firstItem="c0o-6N-z0c" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="24" id="jww-DE-HYN"/>
                 <constraint firstItem="F1n-Yu-efP" firstAttribute="top" secondItem="c0o-6N-z0c" secondAttribute="bottom" constant="8" id="k3E-TP-iqi"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="c0o-6N-z0c" secondAttribute="trailing" id="kDA-7o-Kwm"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="c0o-6N-z0c" secondAttribute="trailing" constant="24" id="kDA-7o-Kwm"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="F1n-Yu-efP" secondAttribute="bottom" constant="16" id="lFv-LD-JMY"/>
                 <constraint firstItem="F1n-Yu-efP" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="rsZ-h8-TQm"/>
             </constraints>

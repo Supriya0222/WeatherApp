@@ -9,7 +9,9 @@ import Foundation
 import CoreLocation
 
 class LocationManager: NSObject, CLLocationManagerDelegate {
-    private var locationManager = CLLocationManager()
+    static let shared = LocationManager()
+    private var locationManager: CLLocationManager = CLLocationManager()
+    var locationDidUpdate: ((CLLocation) -> Void)?
 
     override init() {
         super.init()
@@ -19,20 +21,59 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     func setupLocationManager() {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.startUpdatingLocation()
     }
-
-    // MARK: - CLLocationManagerDelegate
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.last else { return }
-        // Handle the new location
-        print("Latitude: \(location.coordinate.latitude), Longitude: \(location.coordinate.longitude)")
+        if let location = locations.last {
+            locationDidUpdate?(location)
+        }
     }
 
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        // Handle errors
-        print("Location error: \(error.localizedDescription)")
+    func isLocationPermissionGranted() -> Bool {
+         return CLLocationManager.locationServicesEnabled() &&
+             (CLLocationManager.authorizationStatus() == .authorizedWhenInUse ||
+             CLLocationManager.authorizationStatus() == .authorizedAlways)
+     }
+    
+    var locationAuthorizationStatus: CLAuthorizationStatus {
+           return CLLocationManager.authorizationStatus()
+       }
+     
+     func requestLocationPermission() {
+         locationManager.requestWhenInUseAuthorization()
+     }
+     
+     func startUpdatingLocation() {
+         locationManager.startUpdatingLocation()
+     }
+    
+    func reverseGeocodeLocation(location: CLLocation, completion: @escaping (String?) -> Void) {
+        let geocoder = CLGeocoder()
+
+        geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
+            guard error == nil else {
+                print("Reverse geocoding error: \(error!.localizedDescription)")
+                completion(nil)
+                return
+            }
+
+            if let placemark = placemarks?.first {
+                if let locality = placemark.locality {
+                    completion(locality)
+                } else if let subLocality = placemark.subLocality {
+                    completion(subLocality)
+                } else if let name = placemark.name {
+                    completion(name)
+                } else {
+                    completion(nil)
+                }
+            } else {
+                print("No placemarks found.")
+                completion(nil)
+            }
+        }
     }
+
+    
 }
 

@@ -7,16 +7,23 @@
 
 import Foundation
 import UIKit
+import CoreLocation
 
 class WeatherViewModel {
-    //Used for testing purposes
-    //lat: -26.2041028
-    //long: 28.0473051
         
-    let locationService = LocationManager()
     let apiService = ApiService()
     var currentWeather: ForecastEntity?
     var forecastList: [ForecastEntity] = []
+    
+    var locationPermissionGranted: Bool {
+        return LocationManager.shared.isLocationPermissionGranted()
+    }
+    
+    var locationUpdateHandler: ((CLLocation) -> Void)?
+    
+    var locationAccessDeniedHandler: (() -> Void)?
+    
+    var offlineHandler: (() -> Void)?
     
     func getForecastListFor(latitude: Double, longitude: Double, successHandler: @escaping([ForecastEntity]) -> Void, failureHandler: @escaping(String?) -> Void) {
         
@@ -26,13 +33,12 @@ class WeatherViewModel {
                 failureHandler("An error has occurred")
                 return
             }
+            self.forecastList.removeAll()
             var previousTimestamp: Int32? = nil
             for weatherItem in list {
                 guard let currentTemp = weatherItem.main?.temp, let minTemp = weatherItem.main?.tempMin, let maxTemp = weatherItem.main?.tempMax, let timeStamp = weatherItem.dt, let weatherType = weatherItem.weather?.first?.main else { return }
                 
                 if previousTimestamp == nil {
-                    self.saveForecastWeather(latitude: latitude, longitude: longitude, weatherType: weatherType, currentTemperature: currentTemp, minTemperature: minTemp, maxTemperature: maxTemp, timestamp: timeStamp)
-
                     previousTimestamp = timeStamp
                 }
 
@@ -42,7 +48,6 @@ class WeatherViewModel {
                     self.saveForecastWeather(latitude: latitude, longitude: longitude, weatherType: weatherType, currentTemperature: currentTemp, minTemperature: minTemp, maxTemperature: maxTemp, timestamp: timeStamp)
                     previousTimestamp = timeStamp
                 }
-                
             }
             
             successHandler(self.forecastList)
@@ -81,6 +86,70 @@ class WeatherViewModel {
         self.forecastList.append(cachedForecastWeather)
     }
     
+    func checkLocationPermission() {
+        if LocationManager.shared.isLocationPermissionGranted() {
+            LocationManager.shared.startUpdatingLocation()
+            LocationManager.shared.locationDidUpdate = { [weak self] location in
+                self?.locationUpdateHandler?(location)
+                
+                }
+
+        } else {
+            switch LocationManager.shared.locationAuthorizationStatus {
+            case .notDetermined:
+                LocationManager.shared.requestLocationPermission()
+            case .denied, .restricted:
+                DispatchQueue.main.async {
+                    self.locationAccessDeniedHandler?()
+                }
+            default:
+                DispatchQueue.main.async {
+                    self.offlineHandler?()
+                }
+            }
+        }
+    }
+    
+    func requestLocationPermission() {
+        LocationManager.shared.requestLocationPermission()
+    }
+        
+    func saveLocationToUserDefaults(_ location: CLLocation) {
+        let latitude = location.coordinate.latitude
+        let longitude = location.coordinate.longitude
+        
+        UserDefaults.standard.set(latitude, forKey: "SavedLatitude")
+        UserDefaults.standard.set(longitude, forKey: "SavedLongitude")
+        UserDefaults.standard.synchronize()
+    }
+        
+    func showLocationAccessDeniedAlert(_ viewController: UIViewController) {
+        let alert = UIAlertController(
+            title: "Location Access Denied",
+            message: "Please enable location access in Settings to use this feature.",
+            preferredStyle: .alert
+        )
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alert.addAction(cancelAction)
+
+        let settingsAction = UIAlertAction(title: "Settings", style: .default) { _ in
+            if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.open(settingsURL, options: [:], completionHandler: nil)
+            }
+        }
+        alert.addAction(settingsAction)
+
+        viewController.present(alert, animated: true, completion: nil)
+    }
+    
+    func updateRegionAndDate(_ location: CLLocation) -> (region: String?, date: String?) {
+        LocationManager.shared.reverseGeocodeLocation(location: location) { region in
+            print(region)
+        }
+        return("","")
+    }
+    
     static func getWeatherTypeDetailsFor(_ type: String) -> (backgroundColor: UIColor, backgroundImage: UIImage?, iconImage: UIImage?, weatherType: String) {
         switch type {
             case "Clear":
@@ -106,6 +175,13 @@ class WeatherViewModel {
                 )
         }
     }
-    
+        
+    static func retrieveLocationFromUserDefaults() -> (latitude: Double, longitude: Double) {
+        if let savedLatitude = UserDefaults.standard.value(forKey: "SavedLatitude") as? Double,
+           let savedLongitude = UserDefaults.standard.value(forKey: "SavedLongitude") as? Double {
+            return (latitude: savedLatitude, longitude: savedLongitude)
+        }
+        return (latitude: 0.0, longitude: 0.0)
+    }
 
 }

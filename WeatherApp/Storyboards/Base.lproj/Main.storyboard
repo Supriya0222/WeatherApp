@@ -29,11 +29,41 @@
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zAs-47-czV" customClass="TopAndBottomLabelsView" customModule="WeatherApp" customModuleProvider="target">
-                                <rect key="frame" x="76.666666666666686" y="100" width="240" height="100"/>
+                                <rect key="frame" x="76.666666666666686" y="110" width="240" height="80"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="240" id="9dJ-eD-5zA"/>
-                                    <constraint firstAttribute="height" constant="100" id="mNc-2q-PLy"/>
+                                    <constraint firstAttribute="height" constant="80" id="mNc-2q-PLy"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NZ3-fP-Dzm">
+                                <rect key="frame" x="0.0" y="44" width="41.333333333333336" height="50"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="1f3-eR-9ce">
+                                        <rect key="frame" x="0.0" y="0.0" width="41.333333333333336" height="50"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kFJ-3f-hUN">
+                                                <rect key="frame" x="0.0" y="0.0" width="41.333333333333336" height="25"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="54M-r9-FU1">
+                                                <rect key="frame" x="0.0" y="25" width="41.333333333333336" height="25"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="1f3-eR-9ce" secondAttribute="bottom" id="4M6-Jk-dLf"/>
+                                    <constraint firstAttribute="trailing" secondItem="1f3-eR-9ce" secondAttribute="trailing" id="B5p-up-nYl"/>
+                                    <constraint firstAttribute="height" constant="50" id="OhL-cr-ai7"/>
+                                    <constraint firstItem="1f3-eR-9ce" firstAttribute="leading" secondItem="NZ3-fP-Dzm" secondAttribute="leading" id="TcC-Z7-VfF"/>
+                                    <constraint firstItem="1f3-eR-9ce" firstAttribute="top" secondItem="NZ3-fP-Dzm" secondAttribute="top" id="xwq-0c-fgW"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -46,7 +76,9 @@
                             <constraint firstItem="YsP-kl-Gf0" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="awx-OA-hHU"/>
                             <constraint firstItem="eIX-86-HPb" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="bUP-zW-B3x"/>
                             <constraint firstItem="zAs-47-czV" firstAttribute="centerX" secondItem="YsP-kl-Gf0" secondAttribute="centerX" id="cTy-Fj-Cy5"/>
+                            <constraint firstItem="NZ3-fP-Dzm" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="hXq-eJ-a38"/>
                             <constraint firstAttribute="bottom" secondItem="eIX-86-HPb" secondAttribute="bottom" id="knx-HG-9xA"/>
+                            <constraint firstItem="NZ3-fP-Dzm" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="44" id="rt8-6j-LqB"/>
                             <constraint firstItem="zAs-47-czV" firstAttribute="centerY" secondItem="YsP-kl-Gf0" secondAttribute="centerY" id="ul8-Xp-Lcl"/>
                             <constraint firstItem="YsP-kl-Gf0" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="zvX-0j-V5q"/>
                         </constraints>
@@ -54,6 +86,8 @@
                     <connections>
                         <outlet property="backgroundImageView" destination="YsP-kl-Gf0" id="P38-2e-ZEr"/>
                         <outlet property="currentDetailsView" destination="zAs-47-czV" id="0o2-4F-Hdw"/>
+                        <outlet property="dateUpdatedLabel" destination="54M-r9-FU1" id="HKx-C9-YZO"/>
+                        <outlet property="regionLabel" destination="kFJ-3f-hUN" id="32s-wI-1yh"/>
                         <outlet property="weatherForecastTableView" destination="eIX-86-HPb" id="w1O-8S-RsQ"/>
                     </connections>
                 </viewController>

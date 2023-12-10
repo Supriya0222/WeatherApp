@@ -12,8 +12,8 @@ struct StyleGuide {
     
     //Fonts
     static let currentTempFont =  UIFont.init(name: ".Helvetica-Neue", size: 40) ?? UIFont.init(name: ".SFUI-Regular", size: 40)
-    static let currentTempDescFont =  UIFont.init(name: "Helvetica-Neue", size: 34) ?? UIFont.init(name: "System-Bold", size: 34)
-    static let forecastFont =  UIFont.init(name: "Helvetica-Neue", size: 21) ?? UIFont.init(name: "System-Bold", size: 21)
+    static let currentTempDescFont =  UIFont.init(name: "Helvetica-Neue", size: 34) ?? UIFont.init(name: ".SFUI-Regular", size: 34)
+    static let forecastFont =  UIFont.init(name: "Helvetica-Neue", size: 21) ?? UIFont.init(name: ".SFUI-Regular", size: 21)
 
     
     //Colours

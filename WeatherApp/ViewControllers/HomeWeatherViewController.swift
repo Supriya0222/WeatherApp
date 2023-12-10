@@ -6,12 +6,16 @@
 //
 
 import UIKit
+import CoreLocation
 
 class HomeWeatherViewController: UIViewController {
     
     @IBOutlet weak var weatherForecastTableView: UITableView!
     @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var currentDetailsView: TopAndBottomLabelsView!
+    
+    @IBOutlet weak var regionLabel: UILabel!
+    @IBOutlet weak var dateUpdatedLabel: UILabel!
     
     var headerView: WeatherForecastHeaderView?
     var viewModel : WeatherViewModel = WeatherViewModel()
@@ -23,26 +27,28 @@ class HomeWeatherViewController: UIViewController {
         
         configureTableView()
         
-        viewModel.getCurrentWeatherFor(latitude: -26.2041028, longitude: 28.0473051) { currentWeather in
-            
-            self.setBackgroundFor(currentWeather.weather_type)
-            self.setCurrentWeatherDetailsFor(currentWeather)
-            if let _ = self.headerView {
-                self.weatherForecastTableView.tableHeaderView = self.headerView
-                self.headerView?.updateHeaderViewWith(weatherDetails: currentWeather)
-            }
-            
-            self.viewModel.getForecastListFor(latitude: -26.2041028, longitude: 28.0473051) { list in
-                print(list.count)
-                self.weatherForecastTableView.reloadData()
-            } failureHandler: { message in
-                
-            }
+        setupHandlers()
+        
+        viewModel.checkLocationPermission()
 
-        } failureHandler: { errorMessage in
+    }
+    
+    private func setupHandlers() {
+        viewModel.locationUpdateHandler = { [weak self] location in
+            self?.viewModel.saveLocationToUserDefaults(location)
+            self?.handleLocationUpdate(location.coordinate.latitude, location.coordinate.longitude)
+            
+            }
+        
+        viewModel.offlineHandler = {
+             let cachedForecast = self.viewModel.getCachedForecastWeather(latitude: nil, longitude: nil)
+            let cachedWeather = self.viewModel.getCachedCurrentWeather(latitude: nil, longitude: nil)
+
+            if !cachedForecast.isEmpty && cachedWeather != nil {
+                self.weatherForecastTableView.reloadData()
+            }
             
         }
-
     }
     
     private func configureTableView() {
@@ -72,9 +78,32 @@ class HomeWeatherViewController: UIViewController {
         }
     }
     
+    func handleLocationUpdate(_ latitude: Double, _ longitude: Double) {
+        
+        viewModel.getCurrentWeatherFor(latitude: latitude, longitude: longitude) { currentWeather in
+            
+            self.setBackgroundFor(currentWeather.weather_type)
+            self.setCurrentWeatherDetailsFor(currentWeather)
+            if let _ = self.headerView {
+                self.weatherForecastTableView.tableHeaderView = self.headerView
+                self.headerView?.updateHeaderViewWith(weatherDetails: currentWeather)
+            }
+            
+            self.viewModel.getForecastListFor(latitude: latitude, longitude: longitude) { list in
+                print(list.count)
+                self.weatherForecastTableView.reloadData()
+            } failureHandler: { message in
+                
+            }
+
+        } failureHandler: { errorMessage in
+            
+        }
+        
+      }
+    
     private func setCurrentWeatherDetailsFor(_ weatherDetails: ForecastEntity) {
         currentDetailsView.valueLabel.font = StyleGuide.currentTempFont
-        print(currentDetailsView.valueLabel.font)
         currentDetailsView.descriptionLabel.font = StyleGuide.currentTempDescFont
         currentDetailsView.valueLabel.textColor = StyleGuide.labelTextColor
         currentDetailsView.descriptionLabel.textColor = StyleGuide.labelTextColor

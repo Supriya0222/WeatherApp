@@ -24,6 +24,8 @@ class WeatherForecastHeaderView: UIView {
         minimumTemperatureView.valueLabel.font = StyleGuide.forecastFont
         minimumTemperatureView.descriptionLabel.textColor = StyleGuide.labelTextColor
         minimumTemperatureView.valueLabel.textColor = StyleGuide.labelTextColor
+        minimumTemperatureView.descriptionLabel.textAlignment = .left
+        minimumTemperatureView.valueLabel.textAlignment = .left
 
         currentTemperatureView.valueLabel.text = String(format: "%.1f°", weatherDetails.temp_current)
         currentTemperatureView.descriptionLabel.text = "Current"
@@ -39,6 +41,9 @@ class WeatherForecastHeaderView: UIView {
         maximumTemperatureView.valueLabel.font = StyleGuide.forecastFont
         maximumTemperatureView.descriptionLabel.textColor = StyleGuide.labelTextColor
         maximumTemperatureView.valueLabel.textColor = StyleGuide.labelTextColor
+        maximumTemperatureView.descriptionLabel.textAlignment = .right
+        maximumTemperatureView.valueLabel.textAlignment = .right
+
 
     }
 
