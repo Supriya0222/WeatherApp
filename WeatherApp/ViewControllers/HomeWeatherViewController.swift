@@ -57,6 +57,7 @@ class HomeWeatherViewController: UIViewController {
         
         weatherForecastTableView.rowHeight = UITableView.automaticDimension
         weatherForecastTableView.estimatedRowHeight = 44
+        weatherForecastTableView.separatorStyle = .none
         
         weatherForecastTableView.register(UINib.init(nibName: "WeatherForecastTableViewCell", bundle: nil), forCellReuseIdentifier: "WeatherForecastTableViewCell")
         
